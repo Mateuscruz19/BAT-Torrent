@@ -150,7 +150,7 @@ std::vector<FileInfo> SessionManager::filesAt(int index) const
         fi.path = QString::fromStdString(fs.file_path(i));
         fi.size = fs.file_size(i);
         fi.progress = fi.size > 0 ? static_cast<float>(fileProgress[static_cast<int>(i)]) / fi.size : 1.0f;
-        fi.priority = static_cast<int>(m_torrents[index].file_priority(i));
+        fi.priority = static_cast<std::uint8_t>(m_torrents[index].file_priority(i));
         result.push_back(fi);
     }
     return result;
