@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(BATorrent VERSION 1.0)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(LibtorrentRasterbar REQUIRED)
+set(CMAKE_AUTOMOC ON)
+qt_add_resources(RESOURCES src/resources.qrc)
+add_executable(BATorrent src/main.cpp src/gui/mainwindow.cpp ${RESOURCES})
+target_link_libraries(BATorrent PRIVATE Qt6::Widgets LibtorrentRasterbar::torrent-rasterbar)
