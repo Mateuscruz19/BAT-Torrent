@@ -43,7 +43,6 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.7.*'
-          modules: 'qtbase'
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
