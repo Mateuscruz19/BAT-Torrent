@@ -74,11 +74,24 @@ jobs:
         shell: pwsh
         run: |
           Add-Type -AssemblyName System.Drawing
-          $png = [System.Drawing.Image]::FromFile("$PWD\src\images\logo1.png")
-          $ico = New-Object System.Drawing.Icon([System.Drawing.Bitmap]$png, 256, 256)
-          $stream = [System.IO.File]::Create("$PWD\src\images\logo1.ico")
-          $ico.Save($stream)
-          $stream.Close()
+          $png = [System.Drawing.Bitmap]::FromFile("$PWD\src\images\logo1.png")
+          $resized = New-Object System.Drawing.Bitmap($png, 256, 256)
+          $ms = New-Object System.IO.MemoryStream
+          $resized.Save($ms, [System.Drawing.Imaging.ImageFormat]::Png)
+          $iconData = New-Object System.IO.MemoryStream
+          $writer = New-Object System.IO.BinaryWriter($iconData)
+          $writer.Write([byte[]]@(0,0,1,0,1,0))
+          $writer.Write([byte]0)
+          $writer.Write([byte]0)
+          $writer.Write([byte]0)
+          $writer.Write([byte]0)
+          $writer.Write([int16]1)
+          $writer.Write([int16]32)
+          $writer.Write([uint32]$ms.Length)
+          $writer.Write([uint32]22)
+          $writer.Write($ms.ToArray())
+          [System.IO.File]::WriteAllBytes("$PWD\src\images\logo1.ico", $iconData.ToArray())
+          $writer.Close(); $ms.Close(); $png.Dispose(); $resized.Dispose()
 
       - name: Build Installer
         shell: pwsh
