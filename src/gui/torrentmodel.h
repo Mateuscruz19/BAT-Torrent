@@ -26,6 +26,10 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
+    // Raw data roles for sorting
+    static constexpr int SortRole = Qt::UserRole + 10;
+    static constexpr int StateFilterRole = Qt::UserRole + 11;
+
 public slots:
     void refresh();
 

@@ -10,6 +10,7 @@ add_executable(BATorrent
     src/core/translator.cpp
     src/gui/mainwindow.cpp
     src/gui/torrentmodel.cpp
+    src/gui/torrentfilter.cpp
     src/gui/progressdelegate.cpp
     src/gui/detailspanel.cpp
     src/gui/settingsdialog.cpp

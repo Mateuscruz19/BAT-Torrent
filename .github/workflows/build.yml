@@ -45,12 +45,14 @@ jobs:
           version: '6.7.*'
 
       - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '01f602195983451bc83e72f4214af2cbc495aa94'
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+          C:\vcpkg\bootstrap-vcpkg.bat
+          echo "VCPKG_ROOT=C:\vcpkg" >> $env:GITHUB_ENV
+          echo "C:\vcpkg" >> $env:GITHUB_PATH
 
       - name: Install libtorrent via vcpkg
-        run: vcpkg install libtorrent:x64-windows
+        run: C:\vcpkg\vcpkg install libtorrent:x64-windows
 
       - name: Build
         run: |

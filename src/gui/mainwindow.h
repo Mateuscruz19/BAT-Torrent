@@ -5,10 +5,12 @@
 
 class QTableView;
 class QLabel;
+class QLineEdit;
 class QSplitter;
 class QSystemTrayIcon;
 class SessionManager;
 class TorrentModel;
+class TorrentFilter;
 class DetailsPanel;
 class SpeedGraph;
 
@@ -37,6 +39,7 @@ private slots:
     void openSettings();
     void showWelcome();
     void retranslateUi();
+    void filterByState(const QString &state);
 
 private:
     void applyTheme();
@@ -52,7 +55,9 @@ private:
 
     SessionManager *m_session;
     TorrentModel *m_model;
+    TorrentFilter *m_proxyModel;
     QTableView *m_tableView;
+    QLineEdit *m_searchEdit;
     DetailsPanel *m_detailsPanel;
     SpeedGraph *m_speedGraph;
     QLabel *m_statusLabel;

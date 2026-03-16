@@ -138,6 +138,14 @@ void Translator::loadEnglish()
         {"welcome_step3_desc", "Go to Settings > Preferences to set speed limits and default save path. Closing the window minimizes to system tray — right-click the tray icon to quit."},
         {"welcome_got_it", "Got it!"},
         {"welcome_dont_show", "Don't show again"},
+
+        // Filter bar
+        {"filter_search", "Search torrents..."},
+        {"filter_all_active", "Active"},
+        {"filter_downloading", "Downloading"},
+        {"filter_seeding", "Seeding"},
+        {"filter_paused", "Paused"},
+        {"filter_finished", "Finished"},
     };
 }
 
@@ -254,5 +262,13 @@ void Translator::loadPortuguese()
         {"welcome_step3_desc", "Va em Configuracoes > Preferencias para definir limites de velocidade e pasta padrao. Fechar a janela minimiza para a bandeja do sistema — clique com o botao direito no icone da bandeja para sair."},
         {"welcome_got_it", "Entendi!"},
         {"welcome_dont_show", "Nao mostrar novamente"},
+
+        // Filter bar
+        {"filter_search", "Buscar torrents..."},
+        {"filter_all_active", "Ativos"},
+        {"filter_downloading", "Baixando"},
+        {"filter_seeding", "Semeando"},
+        {"filter_paused", "Pausados"},
+        {"filter_finished", "Concluidos"},
     };
 }

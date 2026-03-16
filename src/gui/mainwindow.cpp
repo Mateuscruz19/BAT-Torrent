@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "torrentmodel.h"
+#include "torrentfilter.h"
 #include "progressdelegate.h"
 #include "detailspanel.h"
 #include "settingsdialog.h"
@@ -30,6 +31,9 @@
 #include <QApplication>
 #include <QLocale>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 MainWindow::MainWindow(SessionManager *session, QWidget *parent)
     : QMainWindow(parent), m_session(session)
@@ -131,11 +135,17 @@ void MainWindow::setupToolBar()
 
 void MainWindow::setupCentralWidget()
 {
+    m_proxyModel = new TorrentFilter(this);
+    m_proxyModel->setSourceModel(m_model);
+
     m_tableView = new QTableView;
-    m_tableView->setModel(m_model);
+    m_tableView->setModel(m_proxyModel);
+    m_tableView->setSortingEnabled(true);
+    m_tableView->sortByColumn(TorrentModel::Name, Qt::AscendingOrder);
     m_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     m_tableView->horizontalHeader()->setStretchLastSection(true);
+    m_tableView->horizontalHeader()->setSortIndicatorShown(true);
     m_tableView->verticalHeader()->hide();
     m_tableView->setShowGrid(false);
     m_tableView->setAlternatingRowColors(true);
@@ -145,11 +155,66 @@ void MainWindow::setupCentralWidget()
     connect(m_tableView->selectionModel(), &QItemSelectionModel::selectionChanged,
             this, &MainWindow::onSelectionChanged);
 
-    m_speedGraph = new SpeedGraph;
+    // Filter bar
+    auto *filterBar = new QWidget;
+    auto *filterLayout = new QHBoxLayout(filterBar);
+    filterLayout->setContentsMargins(6, 4, 6, 4);
+    filterLayout->setSpacing(4);
 
+    m_searchEdit = new QLineEdit;
+    m_searchEdit->setPlaceholderText(tr_("filter_search"));
+    m_searchEdit->setClearButtonEnabled(true);
+    m_searchEdit->setMaximumWidth(250);
+    m_searchEdit->setStyleSheet(
+        "QLineEdit { background-color: #1a1a1a; color: #b0b0b0; border: 1px solid #252525;"
+        "border-radius: 4px; padding: 4px 8px; font-size: 11px; }"
+        "QLineEdit:focus { border-color: #6b2020; }");
+    connect(m_searchEdit, &QLineEdit::textChanged, m_proxyModel, &TorrentFilter::setNameFilter);
+    filterLayout->addWidget(m_searchEdit);
+
+    filterLayout->addSpacing(8);
+
+    auto addFilterBtn = [&](const QString &key, const QString &state) {
+        auto *btn = new QPushButton(tr_(key));
+        btn->setCheckable(true);
+        btn->setStyleSheet(
+            "QPushButton { background: transparent; color: #707070; border: 1px solid #252525;"
+            "border-radius: 3px; padding: 3px 10px; font-size: 11px; font-weight: bold; }"
+            "QPushButton:hover { background-color: #2a1015; color: #c43030; }"
+            "QPushButton:checked { background-color: #2a1015; color: #c43030; border-color: #6b2020; }");
+        connect(btn, &QPushButton::toggled, this, [this, btn, state](bool checked) {
+            // Uncheck other filter buttons
+            if (checked) {
+                for (auto *other : btn->parentWidget()->findChildren<QPushButton *>()) {
+                    if (other != btn) other->setChecked(false);
+                }
+                filterByState(state);
+            } else {
+                filterByState("");
+            }
+        });
+        filterLayout->addWidget(btn);
+    };
+
+    addFilterBtn("filter_all_active", "all_active");
+    addFilterBtn("filter_downloading", "downloading");
+    addFilterBtn("filter_seeding", "seeding");
+    addFilterBtn("filter_paused", "paused");
+    addFilterBtn("filter_finished", "finished");
+
+    filterLayout->addStretch();
+
+    // Top section: filter bar + table
+    auto *topWidget = new QWidget;
+    auto *topLayout = new QVBoxLayout(topWidget);
+    topLayout->setContentsMargins(0, 0, 0, 0);
+    topLayout->setSpacing(0);
+    topLayout->addWidget(filterBar);
+    topLayout->addWidget(m_tableView);
+
+    m_speedGraph = new SpeedGraph;
     m_detailsPanel = new DetailsPanel(m_session);
 
-    // Bottom panel: speed graph + details tabs side by side
     auto *bottomWidget = new QWidget;
     auto *bottomLayout = new QVBoxLayout(bottomWidget);
     bottomLayout->setContentsMargins(0, 0, 0, 0);
@@ -158,7 +223,7 @@ void MainWindow::setupCentralWidget()
     bottomLayout->addWidget(m_detailsPanel);
 
     auto *splitter = new QSplitter(Qt::Vertical);
-    splitter->addWidget(m_tableView);
+    splitter->addWidget(topWidget);
     splitter->addWidget(bottomWidget);
     splitter->setStretchFactor(0, 3);
     splitter->setStretchFactor(1, 2);
@@ -448,10 +513,34 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
 }
 
+void MainWindow::filterByState(const QString &state)
+{
+    if (state.isEmpty()) {
+        m_proxyModel->setStateFilter("");
+        return;
+    }
+
+    // Map button key to translated state string(s)
+    static const QMap<QString, QString> keyMap = {
+        {"downloading", "state_downloading"},
+        {"seeding", "state_seeding"},
+        {"paused", "state_paused"},
+        {"finished", "state_finished"},
+    };
+
+    if (state == "all_active") {
+        // Show downloading + seeding: use special "active" filter
+        m_proxyModel->setStateFilter("__active__");
+    } else {
+        QString trKey = keyMap.value(state);
+        m_proxyModel->setStateFilter(trKey.isEmpty() ? state : tr_(trKey));
+    }
+}
+
 int MainWindow::selectedRow() const
 {
     QModelIndexList sel = m_tableView->selectionModel()->selectedRows();
     if (sel.isEmpty())
         return -1;
-    return sel.first().row();
+    return m_proxyModel->mapToSource(sel.first()).row();
 }

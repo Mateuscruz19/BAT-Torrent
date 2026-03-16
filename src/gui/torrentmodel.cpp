@@ -43,6 +43,24 @@ QVariant TorrentModel::data(const QModelIndex &index, int role) const
         return info.progress;
     }
 
+    // Raw values for sorting
+    if (role == SortRole) {
+        switch (index.column()) {
+        case Name:      return info.name.toLower();
+        case Size:      return info.totalSize;
+        case Progress:  return info.progress;
+        case DownSpeed: return info.downloadRate;
+        case UpSpeed:   return info.uploadRate;
+        case State:     return info.stateString;
+        case Peers:     return info.numPeers;
+        }
+    }
+
+    // State for filtering
+    if (role == StateFilterRole) {
+        return info.stateString;
+    }
+
     return {};
 }
 

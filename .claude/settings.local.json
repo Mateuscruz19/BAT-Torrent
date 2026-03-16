@@ -5,7 +5,8 @@
       "Bash(pacman:*)",
       "Bash(find /usr/lib/cmake -name *libtorrent* -o -name *LibtorrentRasterbar*)",
       "Read(//usr/include/libtorrent/**)",
-      "Bash(cmake:*)"
+      "Bash(cmake:*)",
+      "WebSearch"
     ]
   }
 }
