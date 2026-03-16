@@ -10,16 +10,14 @@ TorrentFilter::TorrentFilter(QObject *parent)
 
 void TorrentFilter::setStateFilter(const QString &state)
 {
-    beginFilterChange();
     m_stateFilter = state;
-    endFilterChange();
+    invalidateFilter();
 }
 
 void TorrentFilter::setNameFilter(const QString &text)
 {
-    beginFilterChange();
     m_nameFilter = text.toLower();
-    endFilterChange();
+    invalidateFilter();
 }
 
 bool TorrentFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
