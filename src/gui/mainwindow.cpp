@@ -223,6 +223,7 @@ MainWindow::~MainWindow()
 void MainWindow::applyTheme()
 {
     setStyleSheet(ThemeManager::instance().styleSheet());
+    ThemeManager::instance().applyPalette(this);
 }
 
 void MainWindow::setupMenuBar()

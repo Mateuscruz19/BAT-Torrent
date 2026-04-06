@@ -35,6 +35,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     setWindowTitle(tr_("settings_title"));
     setMinimumSize(500, 400);
     setStyleSheet(ThemeManager::instance().dialogStyleSheet());
+    ThemeManager::instance().applyPalette(this);
 
     auto *tabs = new QTabWidget;
 

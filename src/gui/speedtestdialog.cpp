@@ -50,6 +50,7 @@ SpeedTestDialog::SpeedTestDialog(QWidget *parent)
             background-color: %3; border-radius: 3px;
         }
     )").arg(bg, tx, ac, mt, bd, tm.accentLightColor(), sf));
+    ThemeManager::instance().applyPalette(this);
 
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(36, 28, 36, 28);

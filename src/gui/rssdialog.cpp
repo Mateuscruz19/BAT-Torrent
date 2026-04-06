@@ -27,6 +27,7 @@ RssDialog::RssDialog(QWidget *parent)
     setWindowTitle(tr_("rss_title"));
     setMinimumSize(800, 550);
     setStyleSheet(ThemeManager::instance().dialogStyleSheet());
+    ThemeManager::instance().applyPalette(this);
 
     auto &tm = ThemeManager::instance();
     auto *mainLayout = new QVBoxLayout(this);

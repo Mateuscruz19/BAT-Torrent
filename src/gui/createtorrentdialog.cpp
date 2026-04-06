@@ -29,6 +29,7 @@ CreateTorrentDialog::CreateTorrentDialog(QWidget *parent)
     setWindowTitle(tr_("create_title"));
     setMinimumSize(500, 350);
     setStyleSheet(ThemeManager::instance().dialogStyleSheet());
+    ThemeManager::instance().applyPalette(this);
 
     QString labelStyle = ThemeManager::instance().formLabelStyle();
 

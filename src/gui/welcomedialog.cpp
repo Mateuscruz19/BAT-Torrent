@@ -44,6 +44,7 @@ WelcomeDialog::WelcomeDialog(QWidget *parent)
         }
         QCheckBox::indicator:checked { background-color: %5; border-color: %5; }
     )").arg(bg, tx, sf, mt, ac, bd, tm.accentLightColor()));
+    ThemeManager::instance().applyPalette(this);
 
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(36, 28, 36, 28);

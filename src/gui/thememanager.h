@@ -6,6 +6,7 @@
 #define THEMEMANAGER_H
 
 #include <QString>
+class QWidget;
 
 class ThemeManager
 {
@@ -19,6 +20,7 @@ public:
     QString styleSheet() const;
     QString dialogStyleSheet() const;
     QString formLabelStyle() const;
+    void applyPalette(QWidget *widget) const;
 
     QString accentColor() const;
     QString bgColor() const;

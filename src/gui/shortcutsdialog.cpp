@@ -42,6 +42,7 @@ ShortcutsDialog::ShortcutsDialog(QWidget *parent)
             padding: 6px 12px; font-weight: 600;
         }
     )").arg(bg, tx, sf, bd, ac));
+    ThemeManager::instance().applyPalette(this);
 
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(24, 20, 24, 20);

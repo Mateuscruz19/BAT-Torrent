@@ -23,6 +23,7 @@ SearchDialog::SearchDialog(SessionManager *session, const QString &savePath, QWi
     setWindowTitle(tr_("search_title"));
     setMinimumSize(700, 500);
     setStyleSheet(ThemeManager::instance().dialogStyleSheet());
+    ThemeManager::instance().applyPalette(this);
 
     auto &tm = ThemeManager::instance();
     auto *layout = new QVBoxLayout(this);

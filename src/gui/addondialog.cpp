@@ -22,6 +22,7 @@ AddonDialog::AddonDialog(QWidget *parent)
     setWindowTitle(tr_("addon_title"));
     setMinimumSize(550, 400);
     setStyleSheet(ThemeManager::instance().dialogStyleSheet());
+    ThemeManager::instance().applyPalette(this);
 
     auto &tm = ThemeManager::instance();
     auto *layout = new QVBoxLayout(this);

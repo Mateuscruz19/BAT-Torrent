@@ -43,6 +43,7 @@ ReleaseNotesDialog::ReleaseNotesDialog(QWidget *parent)
         }
         QPushButton:hover { background-color: %7; }
     )").arg(bg, tx, sf, mt, ac, bd, tm.accentLightColor()));
+    ThemeManager::instance().applyPalette(this);
 
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(32, 24, 32, 24);

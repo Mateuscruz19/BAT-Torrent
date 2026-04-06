@@ -59,6 +59,7 @@ StatisticsDialog::StatisticsDialog(SessionManager *session, QWidget *parent)
         QLabel { color: %2; }
         QFrame[frameShape="4"] { background-color: %3; max-height: 1px; }
     )").arg(bg, tx, bd));
+    ThemeManager::instance().applyPalette(this);
 
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(36, 28, 36, 28);

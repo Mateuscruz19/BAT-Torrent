@@ -4,6 +4,9 @@
 
 #include "thememanager.h"
 #include <QStringList>
+#include <QWidget>
+#include <QPalette>
+#include <QColor>
 
 ThemeManager &ThemeManager::instance()
 {
@@ -360,4 +363,18 @@ QString ThemeManager::styleSheet() const
     return applyColors(css, bgColor(), surfaceColor(), textColor(),
                        mutedColor(), accentColor(), accentDarkColor(),
                        accentLightColor(), accentSurfaceColor(), borderColor());
+}
+
+void ThemeManager::applyPalette(QWidget *widget) const
+{
+    QPalette pal = widget->palette();
+    pal.setColor(QPalette::Window, QColor(bgColor()));
+    pal.setColor(QPalette::WindowText, QColor(textColor()));
+    pal.setColor(QPalette::Base, QColor(surfaceColor()));
+    pal.setColor(QPalette::Text, QColor(textColor()));
+    pal.setColor(QPalette::Button, QColor(surfaceColor()));
+    pal.setColor(QPalette::ButtonText, QColor(textColor()));
+    pal.setColor(QPalette::ToolTipBase, QColor(surfaceColor()));
+    pal.setColor(QPalette::ToolTipText, QColor(textColor()));
+    widget->setPalette(pal);
 }

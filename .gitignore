@@ -16,3 +16,4 @@ build-release/
 *.o
 *.so
 *.a
+build-test/
