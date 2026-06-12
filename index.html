@@ -71,7 +71,7 @@ nav {
 .wordmark { font-family: var(--display); font-size: 21px; letter-spacing: .5px; }
 .wordmark b { color: var(--red); font-weight: 400; }
 .wordmark span { color: var(--t1); }
-.nav-links { display: flex; gap: 22px; margin-left: auto; }
+.nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
 .nav-links a { color: var(--t2); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .15s; }
 .nav-links a:hover { color: var(--t1); }
 .nav-star {
@@ -312,8 +312,78 @@ footer {
   .trust { padding: 44px 24px; }
   .nav-links a:not(.nav-star) { display: none; }
 }
+/* ---------- blood moon ---------- */
+.moon {
+  position: absolute;
+  top: 34px; left: 50%;
+  width: 300px; height: 300px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%,
+    rgba(229,51,43,.22),
+    rgba(229,51,43,.10) 45%,
+    rgba(229,51,43,.035) 68%,
+    transparent 72%);
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+/* ---------- bats ---------- */
+.bat {
+  position: absolute;
+  pointer-events: none;
+  opacity: var(--o, .35);
+  animation: fly var(--t, 46s) linear infinite;
+  animation-delay: var(--d, 0s);
+  z-index: 1;
+}
+.bat svg {
+  display: block;
+  width: var(--s, 26px); height: auto;
+  fill: #1c0d0d;
+  filter: drop-shadow(0 0 6px rgba(229,51,43,.12));
+  animation: flap var(--f, .32s) ease-in-out infinite alternate;
+  transform-origin: 50% 30%;
+}
+.bat.red svg { fill: rgba(229,51,43,.5); }
+@keyframes fly {
+  0%   { transform: translate(-6vw,   0)    rotate(4deg); }
+  25%  { transform: translate(24vw, -3.2vw) rotate(-3deg); }
+  50%  { transform: translate(54vw,  1.6vw) rotate(5deg); }
+  75%  { transform: translate(82vw, -2.4vw) rotate(-4deg); }
+  100% { transform: translate(108vw, .8vw)  rotate(3deg); }
+}
+@keyframes flap {
+  from { transform: scaleY(1)   scaleX(1); }
+  to   { transform: scaleY(.62) scaleX(1.06); }
+}
+
+/* ---------- carpathian crest (castle ridge before footer) ---------- */
+.crest {
+  position: relative;
+  margin-top: 110px;
+  height: 240px;
+  overflow: hidden;
+}
+.crest::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 90% at 50% 108%, rgba(229,51,43,.20), rgba(229,51,43,.05) 55%, transparent 75%);
+  pointer-events: none;
+}
+.crest svg.ridge {
+  position: absolute; left: 50%; bottom: -2px;
+  transform: translateX(-50%);
+  width: max(1440px, 100vw); height: auto;
+  display: block;
+}
+.crest .bat { bottom: 120px; animation-duration: var(--t, 60s); }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal, .stagger > * { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+  .bat { animation: none !important; left: var(--rx, 50%); top: var(--ry, 30%); }
+  .bat svg { animation: none !important; }
 }
 </style>
 </head>
@@ -329,13 +399,32 @@ footer {
       <a href="#features">Features</a>
       <a href="#download">Download</a>
       <a class="nav-star" href="https://github.com/Mateuscruz19/BATorrent" target="_blank" rel="noopener">
-        ★ <span id="stars">GitHub</span>
+        ★ GitHub
       </a>
     </div>
   </div>
 </nav>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bat" viewBox="0 0 100 44">
+      <path d="M50 26
+        C46 19 41 22 38 28 C36 19 29 20 25 26 C23 14 12 12 3 17
+        C14 4 34 3 44 13 C45.5 9 46.5 8.5 47.5 4 L50 9 L52.5 4
+        C53.5 8.5 54.5 9 56 13 C66 3 86 4 97 17 C88 12 77 14 75 26
+        C71 20 64 19 62 28 C59 22 54 19 50 26 Z"/>
+    </symbol>
+  </defs>
+</svg>
+
 <header>
+  <!-- night sky: blood moon + a slow colony crossing the hero -->
+  <div class="moon" aria-hidden="true"></div>
+  <span class="bat" style="--s:30px; --t:52s; --d:-6s;  --o:.5;  --f:.30s; top:13%;" aria-hidden="true"><svg><use href="#bat"/></svg></span>
+  <span class="bat" style="--s:18px; --t:64s; --d:-30s; --o:.34; --f:.26s; top:22%;" aria-hidden="true"><svg><use href="#bat"/></svg></span>
+  <span class="bat red" style="--s:13px; --t:74s; --d:-48s; --o:.30; --f:.22s; top:9%;" aria-hidden="true"><svg><use href="#bat"/></svg></span>
+  <span class="bat" style="--s:23px; --t:58s; --d:-18s; --o:.4;  --f:.34s; top:30%;" aria-hidden="true"><svg><use href="#bat"/></svg></span>
+  <span class="bat red" style="--s:10px; --t:80s; --d:-64s; --o:.26; --f:.20s; top:18%;" aria-hidden="true"><svg><use href="#bat"/></svg></span>
   <div class="wrap stagger">
     <div class="hero-eyebrow">Free · Open source · No ads · No telemetry</div>
     <h1>The BitTorrent client<br>with a <span class="accent">face</span>.</h1>
@@ -347,7 +436,7 @@ footer {
       <a class="btn btn-red" href="#download">Download — it's free</a>
       <a class="btn btn-ghost" href="https://github.com/Mateuscruz19/BATorrent" target="_blank" rel="noopener">View source ↗</a>
     </div>
-    <div class="hero-meta">Windows · macOS · Linux &nbsp;—&nbsp; native <b>C++/Qt6</b>, not Electron &nbsp;—&nbsp; <b>MIT</b> licensed</div>
+    <div class="hero-meta"><b id="dl">2,000+</b> downloads &nbsp;—&nbsp; Windows · macOS · Linux &nbsp;—&nbsp; native <b>C++/Qt6</b>, not Electron &nbsp;—&nbsp; <b>MIT</b></div>
     <div class="demo">
       <video src="assets/demo.mp4" autoplay loop muted playsinline poster="assets/shot-grid.jpg"></video>
     </div>
@@ -462,7 +551,49 @@ footer {
   </section>
 </div>
 
-<footer>
+<!-- carpathian crest: the ridge home of the colony -->
+<div class="crest" aria-hidden="true">
+  <span class="bat" style="--s:16px; --t:70s; --d:-12s; --o:.45; --f:.28s; top:26%;"><svg><use href="#bat"/></svg></span>
+  <span class="bat red" style="--s:11px; --t:84s; --d:-50s; --o:.3; --f:.24s; top:14%;"><svg><use href="#bat"/></svg></span>
+  <svg class="ridge" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax meet">
+    <defs>
+      <path id="skyline" d="M0 240 L0 178
+        L40 168 L70 174 L110 152 L150 160 L185 148 L225 166
+        L250 162 l8 -22 8 22 l6 0 l7 -18 7 18 l6 0 l9 -26 9 26 l5 0 l7 -16 7 16
+        L350 168 L405 138 L445 128
+        L470 126 L470 104 L476 104 L476 96 L486 96 L486 104 L492 104 L492 96 L502 96 L502 104 L508 104 L508 96 L518 96 L518 104 L524 104 L524 126
+        L548 126 L548 78 L556 78 L552 70 L560 70 L566 34 L572 70 L580 70 L576 78 L584 78 L584 126
+        L606 126 L606 88 L612 88 L612 80 L620 80 L620 88 L626 88 L626 80 L634 80 L634 88 L640 88 L640 80 L648 80 L648 88 L654 88 L654 126
+        L678 126 L678 96 L684 96 L688 52 L692 96 L698 96 L698 126
+        L722 126 L722 110 L728 110 L728 102 L736 102 L736 110 L742 110 L742 102 L750 102 L750 110 L756 110 L756 132
+        L790 142 L830 168 L870 186
+        L920 180 l6 -14 6 14 l5 0 l8 -20 8 20
+        L990 178 L1020 162 L1036 158 L1036 140 L1041 146 L1046 134 L1052 144 L1057 138 L1057 162
+        L1090 170 L1130 162 L1170 176
+        L1200 172 l7 -18 7 18 l5 0 l8 -22 8 22
+        L1280 176 L1330 166 L1380 178 L1440 172 L1440 240 Z"/>
+    </defs>
+    <use href="#skyline" fill="rgba(229,51,43,.30)" transform="translate(0,-3)"/>
+    <use href="#skyline" fill="#070709"/>
+    <!-- lit windows in the keep -->
+    <g fill="#e5332b">
+      <rect x="563" y="84" width="3.4" height="6" opacity=".85">
+        <animate attributeName="opacity" values=".85;.4;.85" dur="6s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="615" y="100" width="3.4" height="6" opacity=".6">
+        <animate attributeName="opacity" values=".6;.25;.6" dur="8.5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="641" y="100" width="3.4" height="6" opacity=".7">
+        <animate attributeName="opacity" values=".7;.35;.7" dur="7.2s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="686" y="106" width="3.4" height="6" opacity=".5">
+        <animate attributeName="opacity" values=".5;.2;.5" dur="9.4s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+  </svg>
+</div>
+
+<footer style="margin-top:0">
   <div class="wrap foot-inner">
     <span class="wordmark"><b>BAT</b><span>orrent</span></span>
     <span>Made by <a href="https://github.com/Mateuscruz19" style="color:var(--t2);text-decoration:none">Mateus Cruz</a> in Brazil 🇧🇷</span>
@@ -478,10 +609,14 @@ footer {
 </footer>
 
 <script>
-// live star count (graceful if rate-limited)
-fetch("https://api.github.com/repos/Mateuscruz19/BATorrent")
+// live download count across releases (graceful static fallback if rate-limited)
+fetch("https://api.github.com/repos/Mateuscruz19/BATorrent/releases?per_page=100")
   .then(r => r.json())
-  .then(d => { if (d.stargazers_count) document.getElementById("stars").textContent = d.stargazers_count; })
+  .then(rs => {
+    if (!Array.isArray(rs)) return;
+    const n = rs.reduce((a, rel) => a + rel.assets.reduce((b, x) => b + (x.download_count || 0), 0), 0);
+    if (n > 0) document.getElementById("dl").textContent = n.toLocaleString("en-US") + "+";
+  })
   .catch(() => {});
 
 // scroll reveals
